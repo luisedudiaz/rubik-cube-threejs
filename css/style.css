@@ -1,0 +1,18 @@
+.btn-orange {
+  background: orangered;
+}
+
+.logo {
+  height: 40px;
+}
+ .center-logo {
+   place-content: center;
+ }
+
+ div#threebythree {
+   height: 450px;
+ }
+
+ canvas {
+   border-radius: 0.25rem;
+ }
