@@ -52,28 +52,35 @@ class Canvas {
     THREE.Object3D._threexDomEvent.camera(this._camera);
   };
 
+  // Set all the required ilimination 
   #setLights = () => {
     this._scene.add(new THREE.AmbientLight(this.#BACKGROUND_LIGHT))
   };
 
+  // Let you move in the camera
   #setOrbitControls = () => {
     this._orbitControls = THREE.OrbitControls(this._camera, this._renderer.domElement);
   };
 
+  // Calculates every resize of the window to make it responsive 
   #onWindowResize = () => {
     this._camera.aspect = this._canvas.clientWidth / this._canvas.clientHeight
     this._camera.updateProjectionMatrix()
     this._renderer.setSize(this._canvas.clientWidth, this._canvas.clientHeight)
   }
 
+  // Enables you to rotate the cube in de canvas
   enableOrbitControl = () => {
+    console.log(this._orbitControls)
     this._orbitControls.noRotate = false
   }
 
+  // Disables you to rotate the cube in the canvas
   disableOrbitControl = () => {
     this._orbitControls.noRotate = true
   }
 
+  // Shows the Cartesian plane in the scene
   showAxisHelper = () => {
     this._scene.add(new THREE.AxisHelper(this.#SIZE_AXIS_HELPER))
   }
