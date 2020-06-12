@@ -84,6 +84,34 @@ function init5x5() {
   run()
 }
 
+function init6x6() {
+  const selector6x6 = document.querySelector('#sixbysix');
+  const canvas6x6 = new Canvas(
+    new THREE.Scene(),
+    new THREE.PerspectiveCamera(FOV, selector6x6.clientWidth / selector6x6.clientHeight, NEAR, FAR),
+    new THREE.WebGLRenderer(ANTIALIAS),
+    selector6x6);
+
+  canvas6x6.createScene()
+  canvas6x6.showAxisHelper()
+
+  const rubik6x6 = new Rubik(6, canvas6x6)
+  rubik6x6.createRubik()
+
+  buttonsEvents(rubik6x6, { shuffle: '#shuffle6x6', solve: '#solve6x6', undo: '#undo6x6'})
+
+  function run() {
+
+    if (rubik6x6.isMoving) {
+      rubik6x6.doMove()
+    }
+
+    canvas6x6.renderer.render(canvas6x6.scene, canvas6x6.camera)
+    requestAnimationFrame(run)
+  }
+  run()
+}
+
 function buttonsEvents(rubik, selector) {
   console.log(selector)
   document.querySelector(selector.shuffle).addEventListener('click', (e) => {
