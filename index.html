@@ -21,10 +21,9 @@
     <div class="col-12 col-md-6">
       <div class="controls position-absolute w-100 d-flex justify-content-start">
         <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-warning text-white">Undo</button>
-          <button type="button" class="btn btn-danger">Shuffle</button>
-          <button type="button" class="btn btn-primary">Solve</button>
-          <button type="button" class="btn btn-orange text-white">Reset</button>
+          <button type="button" class="btn btn-warning text-white" id="undo3x3">Undo</button>
+          <button type="button" class="btn btn-danger" id="shuffle3x3">Shuffle</button>
+          <button type="button" class="btn btn-primary" id="solve3x3">Solve</button>
         </div>
       </div>
       <div class="w-100" id="threebythree"></div>
@@ -32,26 +31,24 @@
     <div class="col-12 col-md-6">
       <div class="controls position-absolute w-100 d-flex justify-content-start">
         <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-warning text-white">Undo</button>
-          <button type="button" class="btn btn-danger">Shuffle</button>
-          <button type="button" class="btn btn-primary">Solve</button>
-          <button type="button" class="btn btn-orange text-white">Reset</button>
+          <button type="button" class="btn btn-warning text-white" id="undo4x4">Undo</button>
+          <button type="button" class="btn btn-danger" id="shuffle4x4">Shuffle</button>
+          <button type="button" class="btn btn-primary" id="solve4x4">Solve</button>
         </div>
       </div>
-      <canvas class="w-100" id="fourbyfour"></canvas>
+      <div class="w-100" id="fourbyfour"></div>
     </div>
   </div>
   <div class="row mt-3">
     <div class="col-12 col-md-6">
       <div class="controls position-absolute w-100 d-flex justify-content-start">
         <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-warning text-white">Undo</button>
-          <button type="button" class="btn btn-danger">Shuffle</button>
-          <button type="button" class="btn btn-primary">Solve</button>
-          <button type="button" class="btn btn-orange text-white">Reset</button>
+          <button type="button" class="btn btn-warning text-white" id="undo5x5">Undo</button>
+          <button type="button" class="btn btn-danger" id="shuffle5x5">Shuffle</button>
+          <button type="button" class="btn btn-primary" id="solve5x5">Solve</button>
         </div>
       </div>
-      <canvas class="w-100" id="fivebyfive"></canvas>
+      <div class="w-100" id="fivebyfive"></div>
     </div>
     <div class="col-12 col-md-6">
       <div class="controls position-absolute w-100 d-flex justify-content-start">
@@ -59,20 +56,21 @@
           <button type="button" class="btn btn-warning text-white">Undo</button>
           <button type="button" class="btn btn-danger">Shuffle</button>
           <button type="button" class="btn btn-primary">Solve</button>
-          <button type="button" class="btn btn-orange text-white">Reset</button>
         </div>
       </div>
-      <canvas class="w-100" id="sixbysix"></canvas>
+      <div class="w-100" id="sixbysix"></div>
     </div>
   </div>
 </div>
-
+  <script src="js/libs/jquery.min.js"></script>
   <script src="js/libs/three.js"></script>
+  <script src="js/libs/OrbitControls.js"></script>
   <script src="js/libs/threex.domevent.js"></script>
   <script src="js/libs/threex.domevent.object3d.js"></script>
-  <script src="js/libs/OrbitControls.js"></script>
+  <script src="js/Utils.js"></script>
   <script src="js/Canvas.js"></script>
   <script src="js/Cube.js"></script>
+  <script src="js/Rubik.js"></script>
   <script src="js/index.js"></script>
 </body>
 </html>

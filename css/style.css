@@ -5,14 +5,27 @@
 .logo {
   height: 40px;
 }
- .center-logo {
-   place-content: center;
- }
+.center-logo {
+  place-content: center;
+}
 
- div#threebythree {
-   height: 450px;
- }
 
- canvas {
-   border-radius: 0.25rem;
- }
+div#threebythree {
+  height: 450px;
+}
+
+div#fourbyfour {
+  height: 450px;
+}
+
+div#fivebyfive {
+  height: 450px;
+}
+
+div#sixbysix {
+  height: 450px;
+}
+
+canvas {
+  border-radius: 0.25rem;
+}
