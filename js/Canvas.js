@@ -85,6 +85,7 @@ class Canvas {
     this._scene.add(new THREE.AxisHelper(this.#SIZE_AXIS_HELPER))
   }
 
+  //  Initalize all the elements of scene 
   createScene = (canvas) => {
     this._canvas = canvas
     this.#setRenderer(canvas);
@@ -95,6 +96,11 @@ class Canvas {
   }
 
   run = () => {
+    
+    if (isMoving) {
+      doMove
+    }
+
     this._renderer.render(this._scene, this._camera)
     requestAnimationFrame(this.run)
   }
