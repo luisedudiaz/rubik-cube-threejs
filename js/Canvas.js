@@ -1,7 +1,7 @@
 // The class canvas is where the structure is created
 class Canvas {
-  #ALPHA_RENDERER = 1.0; 
-  #BACKGROUND_RENDERER = 0x303030;
+  #ALPHA_RENDERER = 1.0;
+  #BACKGROUND_RENDERER = 0x707070;
   #BACKGROUND_LIGHT = 0xffffff;
   #CAMERA_POSITION = {
     x: -20,
@@ -19,8 +19,7 @@ class Canvas {
     this._orbitControls = null;
   }
 
-  // Getters of the elements required in the scene 
-
+  // Getters of the elements required in the scene
   get renderer() {
     return this._renderer
   }
@@ -38,7 +37,7 @@ class Canvas {
   }
 
   // Sets all the elements size, color and add all elements to the dom element
-  #setRenderer = (canvas) => {
+  #setRenderer = () => {
     this._renderer.setClearColor(this.#BACKGROUND_RENDERER, this.#ALPHA_RENDERER);
     this._renderer.setSize(this._selector.clientWidth, this._selector.clientHeight);
     this._renderer.shadowMapEnabled = true;
@@ -52,21 +51,21 @@ class Canvas {
     THREE.Object3D._threexDomEvent.camera(this._camera);
   };
 
-  // Set all the required ilimination 
+  // Set all the required ilimination
   #setLights = () => {
     this._scene.add(new THREE.AmbientLight(this.#BACKGROUND_LIGHT))
   };
 
   // Let you move in the camera
   #setOrbitControls = () => {
-    this._orbitControls = THREE.OrbitControls(this._camera, this._renderer.domElement);
+    this._orbitControls = new THREE.OrbitControls(this._camera, this._renderer.domElement);
   };
 
-  // Calculates every resize of the window to make it responsive 
+  // Calculates every resize of the window to make it responsive
   #onWindowResize = () => {
-    this._camera.aspect = this._canvas.clientWidth / this._canvas.clientHeight
+    this._camera.aspect = this._selector.clientWidth / this._selector.clientHeight
     this._camera.updateProjectionMatrix()
-    this._renderer.setSize(this._canvas.clientWidth, this._canvas.clientHeight)
+    this._renderer.setSize(this._selector.clientWidth, this._selector.clientHeight)
   }
 
   // Enables you to rotate the cube in de canvas
@@ -85,18 +84,18 @@ class Canvas {
     this._scene.add(new THREE.AxisHelper(this.#SIZE_AXIS_HELPER))
   }
 
-  //  Initalize all the elements of scene 
+  //  Initalize all the elements of scene
   createScene = (canvas) => {
     this._canvas = canvas
-    this.#setRenderer(canvas);
+    this.#setRenderer();
     this.#setCamera()
     this.#setLights()
     this.#setOrbitControls()
     window.addEventListener('resize', this.#onWindowResize, true);
   }
+   
+  run = (isMoving, doMove,) => {
 
-  run = () => {
-    
     if (isMoving) {
       doMove
     }

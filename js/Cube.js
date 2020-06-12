@@ -2,7 +2,7 @@
 class Cube {
   #COLORS = ['#FFE200', '#FFFFFF', '#00a239', '#0052A2','#EF7C00' ,'#E50026']
 
-  //This constructor, specifies cube size, space, and movement. 
+  //This constructor, specifies cube size, space, and movement.
   constructor(canvas) {
     //This element it is obtained from the canvas and receives the 3 x 3 selector.
     this._canvas = canvas
@@ -13,7 +13,8 @@ class Cube {
 
   }
 
-  //This method loads the the materials used and the colors of the ambient and of the cube. 
+  //This method loads the the materials used and the colors of the ambient and of the cube.
+
   #loadMaterials = () => {
     const materials = this.#COLORS.map(color => {
       return new THREE.MeshLambertMaterial({ color, ambient: color })
@@ -21,7 +22,12 @@ class Cube {
     return new THREE.MeshFaceMaterial(materials)
   }
 
-  // This method create and implement the Cube in the scene with the materials, and the specife size to create the events. 
+  // This method create and implement the Cube in the scene with the materials, and the specife size to create the events.
+  randomCube = () => {
+    const i = Utils.randomInt(0, this._cubes.length - 1);
+    return this._cubes[i];
+  }
+
   createCube = () => {
     const cubeGeometry = new THREE.CubeGeometry(this._size, this._size, this._size)
     const materials = this.#loadMaterials()
