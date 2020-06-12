@@ -1,6 +1,6 @@
+// The class canvas is where the structure is created
 class Canvas {
-
-  #ALPHA_RENDERER = 1.0;
+  #ALPHA_RENDERER = 1.0; 
   #BACKGROUND_RENDERER = 0x303030;
   #BACKGROUND_LIGHT = 0xffffff;
   #CAMERA_POSITION = {
@@ -10,21 +10,42 @@ class Canvas {
   };
   #SIZE_AXIS_HELPER = 20;
 
-  constructor(scene, camera, renderer) {
+  // Initialize all the objects that are going to be use in the scene
+  constructor(scene, camera, renderer, selector) {
     this._scene = scene;
     this._camera = camera;
     this._renderer = renderer;
+    this._selector = selector
     this._orbitControls = null;
-    this._canvas = null
   }
 
+  // Getters of the elements required in the scene 
+
+  get renderer() {
+    return this._renderer
+  }
+
+  get scene() {
+    return this._scene
+  }
+
+  get camera() {
+    return this._camera
+  }
+
+  get selector() {
+    return this._selector
+  }
+
+  // Sets all the elements size, color and add all elements to the dom element
   #setRenderer = (canvas) => {
     this._renderer.setClearColor(this.#BACKGROUND_RENDERER, this.#ALPHA_RENDERER);
-    this._renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    this._renderer.setSize(this._selector.clientWidth, this._selector.clientHeight);
     this._renderer.shadowMapEnabled = true;
-    canvas.append(this._renderer.domElement);
+    this._selector.append(this._renderer.domElement);
   };
 
+  // Sets all the elements of the camera like position and direction
   #setCamera = () => {
     this._camera.position = new THREE.Vector3(this.#CAMERA_POSITION.x, this.#CAMERA_POSITION.y, this.#CAMERA_POSITION.z);
     this._camera.lookAt(this._scene.position);
