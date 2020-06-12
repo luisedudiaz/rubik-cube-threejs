@@ -1,7 +1,9 @@
+// Manipulates all necessary methods of Rubik
 class Rubik extends Cube {
 
     #ROTATION_SPEED = 0.2
   
+    // Initialize all the objects of Rubik
     constructor(dimension, canvas) {
       super(canvas);
       this._dimension = dimension
@@ -23,10 +25,12 @@ class Rubik extends Cube {
       this._completedMoveStack =[]
     }
   
+    // Getter to know if the cube is moving 
     get isMoving() {
       return this._isMoving
     }
   
+    // Verifies if the cube still moving 
     #moveComplete = () => {
       let moveN = null
       this._isMoving = false;
@@ -49,14 +53,13 @@ class Rubik extends Cube {
   
       this._moveEvents.trigger('complete');
   
-      //Are there any more queued moves?
       this.#startNextMove();
     }
   
+    // Moves the cube depending on the mouse
     doMove = () => {
       //Move a quarter turn then stop
       if(this._pivot.rotation[this._moveAxis] >= Math.PI / 2) {
-        //Compensate for overshoot. TODO: use a tweening library
         this._pivot.rotation[this._moveAxis] = Math.PI / 2;
         this.#moveComplete();
       } else if(this._pivot.rotation[this._moveAxis] <= Math.PI / -2) {
@@ -71,8 +74,7 @@ class Rubik extends Cube {
       this._moveQueue.push({ cube: cube, vector: clickVector, axis: axis, direction: direction });
     }
   
-    //Select the plane of cubes that aligns with clickVector
-    // on the given axis
+    //Select the plane of cubes that aligns with clickVector on the given axis
     #setActiveGroup = (axis) => {
       if(this._clickVector) {
         this._activeGroup = [];
