@@ -1,7 +1,7 @@
 class Rubik extends Cube {
 
     #ROTATION_SPEED = 0.2
-  
+
     // Initialize all elements of Rubik
     constructor(dimension, canvas) {
       super(canvas);
@@ -23,12 +23,12 @@ class Rubik extends Cube {
       this._moveEvents = $({})
       this._completedMoveStack =[]
     }
-  
-    // Verifies if the cube is moving 
+
+    // Verifies if the cube is moving
     get isMoving() {
       return this._isMoving
     }
-  
+
 
     // When the move is over update all cube intances in scene
     #moveComplete = () => {
@@ -52,11 +52,11 @@ class Rubik extends Cube {
       this._completedMoveStack.push(this._currentMove);
 
       this._moveEvents.trigger('complete');
-  
+
       this.#startNextMove();
     }
-  
-    // Moves the element in the scene 
+
+    // Moves the element in the scene
     doMove = () => {
       //Move a quarter turn then stop
       if(this._pivot.rotation[this._moveAxis] >= Math.PI / 2) {
@@ -69,12 +69,12 @@ class Rubik extends Cube {
         this._pivot.rotation[this._moveAxis] += (this._moveDirection * this.#ROTATION_SPEED);
       }
     }
-  
-    // Updates the moving array 
+
+    // Updates the moving array
     #pushMove = (cube, clickVector, axis, direction) => {
       this._moveQueue.push({ cube: cube, vector: clickVector, axis: axis, direction: direction });
     }
-  
+
     //Select the plane of cubes that aligns with clickVector on the given axis
     #setActiveGroup = (axis) => {
       if(this._clickVector) {
@@ -89,7 +89,7 @@ class Rubik extends Cube {
         console.log("Nothing to move!");
       }
     }
-  
+
     // Stir all the rubik
     shuffle = () => {
       const nMoves = Utils.randomInt(10, 40);
@@ -100,8 +100,8 @@ class Rubik extends Cube {
 
       this.#startNextMove();
     }
-  
-    // Solves the rubik 
+
+    // Solves the rubik
     solve = () => {
       if(!this._isMoving) {
         this._completedMoveStack.forEach((move) => {
@@ -117,8 +117,8 @@ class Rubik extends Cube {
         this.#startNextMove();
       }
     }
-  
-    // Takes from the moves array the last element 
+
+    // Takes from the moves array the last element
     undo = () => {
       if(!this.isMoving) {
         const lastMove = this._completedMoveStack.pop();
@@ -134,8 +134,8 @@ class Rubik extends Cube {
         }
       }
     }
-  
-    // Realice the movement in the canvas 
+
+    // Realice the movement in the canvas
     #startNextMove = () => {
       const nextMove = this._moveQueue.pop();
 
@@ -173,13 +173,14 @@ class Rubik extends Cube {
         this._moveEvents.trigger('deplete');
       }
     }
-  
-    // Verify if the mouse is over the cube 
+
+    // Verify if the mouse is over the cube
     #isMouseOverCube = (mouseX, mouseY) => {
       const directionVector = new THREE.Vector3();
-  
-      let x = ( mouseX / this._canvas.selector.clientWidth ) - 1;
-      let y = -( mouseY / this._canvas.selector.clientHeight ) + 1;
+      //Normalise mouse x and y
+      let x = ( mouseX / this._canvas.selector.clientWidth );
+      let y = -( mouseY / this._canvas.selector.clientHeight ) * 2 + 1;
+      console.log(x, y)
       directionVector.set(x, y, 1);
 
       this._projector.unprojectVector(directionVector, this._canvas.camera)
@@ -189,8 +190,8 @@ class Rubik extends Cube {
       console.log(this._raycaster.intersectObjects(this._cubes, true).length > 0)
       return this._raycaster.intersectObjects(this._cubes, true).length > 0;
     }
-  
-    // Event when the mouse is actuated desable the orbit controls 
+
+    // Event when the mouse is actuated desable the orbit controls
     #onCubeMouseDown = (e, cube) => {
       console.log('mousedown')
       this._canvas.disableOrbitControl()
@@ -209,13 +210,13 @@ class Rubik extends Cube {
         }
       }
     };
-  
+
     // Event when the mouse is actuated desable the orbit controls
     #onCubeMouseUp = (e, cube) => {
       if(this._clickVector) {
         this._dragVector = cube.rubikPosition.clone();
         this._dragVector.sub(this._clickVector);
-       
+
         if(this._dragVector.length() > this._size) {
           //Rotate with the most significant component of the drag vector
           // (excluding the current axis, because we can't rotate that way)
@@ -231,7 +232,7 @@ class Rubik extends Cube {
           }
           const rotateAxis = transitions[this._clickFace][maxAxis]
           let direction = this._dragVector[maxAxis] >= 0 ? 1 : -1;
-  
+
           if(this._clickFace === 'z' && rotateAxis === 'x' ||
             this._clickFace === 'x' && rotateAxis === 'z' ||
             this._clickFace === 'y' && rotateAxis === 'z') {
@@ -254,13 +255,13 @@ class Rubik extends Cube {
         }
       }
     }
-  
-    // Action that verifies if the mouse is out the cube range 
+
+    // Action that verifies if the mouse is out the cube range
     #onCubeMouseOut = (e, cube) => {
       this._lastCube = cube;
     }
-  
-    // Sets all event the cube requires 
+
+    // Sets all event the cube requires
     #setCubeEvents = (cube) => {
       cube.on('mousedown', (e) => {
         this.#onCubeMouseDown(e, cube);
@@ -274,8 +275,8 @@ class Rubik extends Cube {
         this.#onCubeMouseOut(e, cube);
       });
     }
-  
-    // Join all the cube instances in a certain position 
+
+    // Join all the cube instances in a certain position
     createRubik = () => {
       const offset = (this._dimension - 1) / 2
       const increment = this._size * this._spacing
