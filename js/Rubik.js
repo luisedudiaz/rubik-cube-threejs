@@ -37,7 +37,7 @@ class Rubik extends Cube {
       this._moveAxis = null
       this._moveDirection = null;
       this._clickVector = null;
-  
+
       this._pivot.updateMatrixWorld();
       this._canvas.scene.remove(this._pivot);
       this._activeGroup.forEach((cube) => {
@@ -45,12 +45,12 @@ class Rubik extends Cube {
         cube.rubikPosition = null
         cube.rubikPosition = cube.position.clone();
         cube.rubikPosition.applyMatrix4(this._pivot.matrixWorld);
-  
+
         THREE.SceneUtils.detach(cube, this._pivot, this._canvas.scene);
       });
-  
+
       this._completedMoveStack.push(this._currentMove);
-  
+
       this._moveEvents.trigger('complete');
   
       this.#startNextMove();
@@ -79,7 +79,7 @@ class Rubik extends Cube {
     #setActiveGroup = (axis) => {
       if(this._clickVector) {
         this._activeGroup = [];
-  
+
         this._cubes.forEach((cube) => {
           if(Utils.nearlyEqual(cube.rubikPosition[axis], this._clickVector[axis])) {
             this._activeGroup.push(cube);
@@ -97,7 +97,7 @@ class Rubik extends Cube {
         const cube = this.randomCube();
         this.#pushMove(cube, cube.position.clone(), Utils.randomAxis(), Utils.randomDirection());
       }
-  
+
       this.#startNextMove();
     }
   
@@ -107,13 +107,13 @@ class Rubik extends Cube {
         this._completedMoveStack.forEach((move) => {
           this.#pushMove(move.cube, move.vector, move.axis, move.direction * -1);
         });
-  
+
         this._completedMoveStack = [];
-  
+
         this._moveEvents.one('deplete', () => {
           this._completedMoveStack = [];
         });
-  
+
         this.#startNextMove();
       }
     }
@@ -125,11 +125,11 @@ class Rubik extends Cube {
         if(lastMove) {
           const stackToRestore = this._completedMoveStack.slice(0);
           this.#pushMove(lastMove.cube, lastMove.vector, lastMove.axis, lastMove.direction * -1);
-  
+
           this._moveEvents.one('complete', function() {
             this._completedMoveStack = stackToRestore;
           });
-  
+
           this.#startNextMove();
         }
       }
@@ -138,30 +138,30 @@ class Rubik extends Cube {
     // Realice the movement in the canvas 
     #startNextMove = () => {
       const nextMove = this._moveQueue.pop();
-  
+
       if (nextMove) {
         this._clickVector = nextMove.vector;
-  
+
         let direction = nextMove.direction || 1
         let axis = nextMove.axis;
-  
+
         if (this._clickVector) {
-  
+
           if(!this._isMoving) {
             this._isMoving = true;
             this._moveAxis = axis;
             this._moveDirection = direction;
-  
+
             this.#setActiveGroup(axis);
-  
+
             this._pivot.rotation.set(0,0,0);
             this._pivot.updateMatrixWorld();
             this._canvas.scene.add(this._pivot);
-  
+
             this._activeGroup.forEach((e) => {
               THREE.SceneUtils.attach(e, this._canvas.scene, this._pivot);
             });
-  
+
             this._currentMove = nextMove;
           } else {
             console.log("Already moving!");
@@ -181,7 +181,7 @@ class Rubik extends Cube {
       let x = ( mouseX / this._canvas.selector.clientWidth ) - 1;
       let y = -( mouseY / this._canvas.selector.clientHeight ) + 1;
       directionVector.set(x, y, 1);
-  
+
       this._projector.unprojectVector(directionVector, this._canvas.camera)
       directionVector.sub(this._canvas.camera.position);
       directionVector.normalize();
@@ -222,8 +222,8 @@ class Rubik extends Cube {
           const dragVectorOtherAxes = this._dragVector.clone();
           if (this._clickFace === null) return
           dragVectorOtherAxes[this._clickFace] = 0;
-          const maxAxis = Utils.principalComponent(dragVectorOtherAxes);
-  
+          const maxAxis = Utils.maxAxis(dragVectorOtherAxes);
+
           const transitions = {
             'x': {'y': 'z', 'z': 'y'},
             'y': {'x': 'z', 'z': 'x'},
@@ -237,17 +237,17 @@ class Rubik extends Cube {
             this._clickFace === 'y' && rotateAxis === 'z') {
             direction *= -1;
           }
-  
-  
+
+
           if(this._clickFace === 'x' && this._clickVector.x > 0 ||
             this._clickFace === 'y' && this._clickVector.y < 0 ||
             this._clickFace === 'z' && this._clickVector.z < 0) {
             direction *= -1;
           }
-  
+
           this.#pushMove(cube, this._clickVector.clone(), rotateAxis, direction);
           this.#startNextMove();
-  
+
           this._canvas.enableOrbitControl()
         } else {
           console.log("Drag me some more please!")
@@ -265,11 +265,11 @@ class Rubik extends Cube {
       cube.on('mousedown', (e) => {
         this.#onCubeMouseDown(e, cube);
       });
-  
+
       cube.on('mouseup', (e) => {
         this.#onCubeMouseUp(e, cube);
       });
-  
+
       cube.on('mouseout', (e) => {
         this.#onCubeMouseOut(e, cube);
       });
@@ -282,11 +282,11 @@ class Rubik extends Cube {
       for(let i = 0; i < this._dimension; i ++) {
         for(let j = 0; j < this._dimension; j ++) {
           for(let k = 0; k < this._dimension; k ++) {
-  
+
             const x = (i - offset) * increment,
               y = (j - offset) * increment,
               z = (k - offset) * increment;
-  
+
             const cube = this.createCube();
             cube.castShadow = true
             cube.position = new THREE.Vector3(x, y, z)
@@ -306,4 +306,3 @@ class Rubik extends Cube {
       });
     }
   }
-  

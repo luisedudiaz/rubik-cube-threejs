@@ -5,8 +5,8 @@ class Utils {
     return Math.abs(a - b) <= d;
   }
 
-  // Function and condition that returns the absolute value of a number, in this case the axis value of 'y' of the position and the vector, and its maximum values
-  static principalComponent(v) {
+  // Return max axis
+  static maxAxis(v) {
     let maxAxis = 'x'
     let max = Math.abs(v.x);
     if (Math.abs(v.y) > max) {
@@ -17,7 +17,6 @@ class Utils {
       maxAxis = 'z';
       max = Math.abs(v.z);
     }
-    //Return the result of the valor of x.
     return maxAxis;
   }
 
