@@ -179,7 +179,7 @@ class Rubik extends Cube {
       const directionVector = new THREE.Vector3();
       //Normalise mouse x and y
       let x = ( mouseX / this._canvas.selector.clientWidth );
-      let y = -( mouseY / this._canvas.selector.clientHeight ) * 2 + 1;
+      let y = ( mouseY / this._canvas.selector.clientHeight );
       console.log(x, y)
       directionVector.set(x, y, 1);
 
@@ -219,7 +219,6 @@ class Rubik extends Cube {
 
         if(this._dragVector.length() > this._size) {
           //Rotate with the most significant component of the drag vector
-          // (excluding the current axis, because we can't rotate that way)
           const dragVectorOtherAxes = this._dragVector.clone();
           if (this._clickFace === null) return
           dragVectorOtherAxes[this._clickFace] = 0;
