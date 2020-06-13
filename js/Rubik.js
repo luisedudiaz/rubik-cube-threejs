@@ -2,6 +2,7 @@ class Rubik extends Cube {
 
     #ROTATION_SPEED = 0.2
   
+    // Initialize all elements of Rubik
     constructor(dimension, canvas) {
       super(canvas);
       this._dimension = dimension
@@ -23,10 +24,13 @@ class Rubik extends Cube {
       this._completedMoveStack =[]
     }
   
+    // Verifies if the cube is moving 
     get isMoving() {
       return this._isMoving
     }
   
+
+    // When the move is over update all cube intances in scene
     #moveComplete = () => {
       let moveN = null
       this._isMoving = false;
@@ -49,14 +53,13 @@ class Rubik extends Cube {
   
       this._moveEvents.trigger('complete');
   
-      //Are there any more queued moves?
       this.#startNextMove();
     }
   
+    // Moves the element in the scene 
     doMove = () => {
       //Move a quarter turn then stop
       if(this._pivot.rotation[this._moveAxis] >= Math.PI / 2) {
-        //Compensate for overshoot. TODO: use a tweening library
         this._pivot.rotation[this._moveAxis] = Math.PI / 2;
         this.#moveComplete();
       } else if(this._pivot.rotation[this._moveAxis] <= Math.PI / -2) {
@@ -67,12 +70,12 @@ class Rubik extends Cube {
       }
     }
   
+    // Updates the moving array 
     #pushMove = (cube, clickVector, axis, direction) => {
       this._moveQueue.push({ cube: cube, vector: clickVector, axis: axis, direction: direction });
     }
   
-    //Select the plane of cubes that aligns with clickVector
-    // on the given axis
+    //Select the plane of cubes that aligns with clickVector on the given axis
     #setActiveGroup = (axis) => {
       if(this._clickVector) {
         this._activeGroup = [];
@@ -87,7 +90,7 @@ class Rubik extends Cube {
       }
     }
   
-  
+    // Stir all the rubik
     shuffle = () => {
       const nMoves = Utils.randomInt(10, 40);
       for(let i = 0; i < nMoves; i ++) {
@@ -98,6 +101,7 @@ class Rubik extends Cube {
       this.#startNextMove();
     }
   
+    // Solves the rubik 
     solve = () => {
       if(!this._isMoving) {
         this._completedMoveStack.forEach((move) => {
@@ -114,6 +118,7 @@ class Rubik extends Cube {
       }
     }
   
+    // Takes from the moves array the last element 
     undo = () => {
       if(!this.isMoving) {
         const lastMove = this._completedMoveStack.pop();
@@ -130,6 +135,7 @@ class Rubik extends Cube {
       }
     }
   
+    // Realice the movement in the canvas 
     #startNextMove = () => {
       const nextMove = this._moveQueue.pop();
   
@@ -168,10 +174,10 @@ class Rubik extends Cube {
       }
     }
   
+    // Verify if the mouse is over the cube 
     #isMouseOverCube = (mouseX, mouseY) => {
       const directionVector = new THREE.Vector3();
   
-      //Normalise mouse x and y
       let x = ( mouseX / this._canvas.selector.clientWidth ) - 1;
       let y = -( mouseY / this._canvas.selector.clientHeight ) + 1;
       directionVector.set(x, y, 1);
@@ -184,6 +190,7 @@ class Rubik extends Cube {
       return this._raycaster.intersectObjects(this._cubes, true).length > 0;
     }
   
+    // Event when the mouse is actuated desable the orbit controls 
     #onCubeMouseDown = (e, cube) => {
       console.log('mousedown')
       this._canvas.disableOrbitControl()
@@ -203,12 +210,12 @@ class Rubik extends Cube {
       }
     };
   
+    // Event when the mouse is actuated desable the orbit controls
     #onCubeMouseUp = (e, cube) => {
       if(this._clickVector) {
         this._dragVector = cube.rubikPosition.clone();
         this._dragVector.sub(this._clickVector);
-        //Don't move if the "drag" was too small, to allow for
-        // click-and-change-mind.
+       
         if(this._dragVector.length() > this._size) {
           //Rotate with the most significant component of the drag vector
           // (excluding the current axis, because we can't rotate that way)
@@ -225,8 +232,6 @@ class Rubik extends Cube {
           const rotateAxis = transitions[this._clickFace][maxAxis]
           let direction = this._dragVector[maxAxis] >= 0 ? 1 : -1;
   
-          //Reverse direction of some rotations for intuitive control
-          //TODO: find a general solution!
           if(this._clickFace === 'z' && rotateAxis === 'x' ||
             this._clickFace === 'x' && rotateAxis === 'z' ||
             this._clickFace === 'y' && rotateAxis === 'z') {
@@ -250,13 +255,12 @@ class Rubik extends Cube {
       }
     }
   
+    // Action that verifies if the mouse is out the cube range 
     #onCubeMouseOut = (e, cube) => {
-      //TODO: there is a possibility that, at some rotations, we may catch unintentional
-      // cubes on the way out. We should check that the selected cube is on the current
-      // drag vector.
       this._lastCube = cube;
     }
   
+    // Sets all event the cube requires 
     #setCubeEvents = (cube) => {
       cube.on('mousedown', (e) => {
         this.#onCubeMouseDown(e, cube);
@@ -271,6 +275,7 @@ class Rubik extends Cube {
       });
     }
   
+    // Join all the cube instances in a certain position 
     createRubik = () => {
       const offset = (this._dimension - 1) / 2
       const increment = this._size * this._spacing
