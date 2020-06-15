@@ -179,7 +179,7 @@ class Rubik extends Cube {
       const directionVector = new THREE.Vector3();
       //Normalise mouse x and y
       let x = ( mouseX / this._canvas.selector.clientWidth );
-      let y = ( mouseY / this._canvas.selector.clientHeight );
+      let y = -( mouseY / this._canvas.selector.clientHeight ) / 2 + 1;
       console.log(x, y)
       directionVector.set(x, y, 1);
 
